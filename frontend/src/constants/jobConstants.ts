@@ -1,0 +1,3 @@
+export const JOB_LIST_REQUEST = 'JOB_LIST_REQUEST'
+export const JOB_LIST_SUCCESS = 'JOB_LIST_SUCCESS'
+export const JOB_LIST_FAIL = 'JOB_LIST_FAIL'
