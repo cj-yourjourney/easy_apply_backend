@@ -13,13 +13,13 @@ export const jobListReducer = (
 ): JobState => {
   switch (action.type) {
     case JOB_LIST_REQUEST:
-      return {...state, loading:true}
+      return { ...state, loading: true }
     case JOB_LIST_SUCCESS:
-      return {...state, loading:false, jobs: action.payload}  
+      return { ...state, loading: false, jobs: action.payload }
     case JOB_LIST_FAIL:
-      return {...state, loading:false, error: action.payload}
-  
+      return { ...state, loading: false, error: action.payload }
+
     default:
-      return state 
+      return state
   }
 }

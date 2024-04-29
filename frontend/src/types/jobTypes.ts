@@ -33,3 +33,4 @@ export type JobActionTypes =
   | JobListRequestAction
   | JobListSuccessAction
   | JobListFailAction
+
