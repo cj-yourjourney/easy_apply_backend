@@ -2,6 +2,8 @@ import json
 from django.http import JsonResponse
 from serpapi import GoogleSearch
 from django.conf import settings  # Import settings module to get the BASE_DIR
+from rest_framework.decorators import api_view
+from ..models import Job
 import os
 
 
@@ -56,3 +58,31 @@ def job_listings_test(request):
 
 #     # Return the job listings as JSON response
 #     return JsonResponse({"job_listings": job_listings})
+
+
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+from rest_framework.decorators import api_view
+import json
+
+
+@api_view(["POST"])
+def create_job(request):
+    data = request.data
+    try:
+        title = data.get("title")
+        company_name = data.get("company_name")
+        description = data.get("description")
+        apply_job_link = data.get("apply_job_link")
+
+        job = Job.objects.create(
+            title=title,
+            company_name=company_name,
+            description=description,
+            apply_job_link=apply_job_link,
+        )
+        return JsonResponse({"message": "Job created successfully"}, status=201)
+
+    except Exception as e:
+        # Return an error response if there's any exception
+        return JsonResponse({"error": str(e)}, status=400)
