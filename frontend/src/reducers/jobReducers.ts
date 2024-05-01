@@ -1,5 +1,13 @@
-import { JOB_LIST_FAIL, JOB_LIST_REQUEST, JOB_LIST_SUCCESS } from '../constants/jobConstants';
-import {JobState, JobActionTypes } from '../types/jobTypes'
+import {
+  JOB_LIST_FAIL,
+  JOB_LIST_REQUEST,
+  JOB_LIST_SUCCESS,
+  JOB_ADD_REQUEST,
+  JOB_ADD_SUCCESS,
+  JOB_ADD_FAIL
+} from '../constants/jobConstants'
+import { JobState, JobListActionTypes, Job } from '../types/jobTypes'
+
 
 const initialState: JobState = {
   jobs: [],
@@ -9,7 +17,7 @@ const initialState: JobState = {
 
 export const jobListReducer = (
   state: JobState = initialState,
-  action: JobActionTypes
+  action: JobListActionTypes
 ): JobState => {
   switch (action.type) {
     case JOB_LIST_REQUEST:

@@ -1,4 +1,4 @@
-import { JOB_LIST_REQUEST, JOB_LIST_SUCCESS, JOB_LIST_FAIL } from "../constants/jobConstants"
+import { JOB_LIST_REQUEST, JOB_LIST_SUCCESS, JOB_LIST_FAIL, JOB_ADD_REQUEST, JOB_ADD_SUCCESS } from "../constants/jobConstants"
 
 
 export type Job = {
@@ -29,7 +29,7 @@ export type JobListFailAction = {
   payload: string 
 }
 
-export type JobActionTypes =
+export type JobListActionTypes =
   | JobListRequestAction
   | JobListSuccessAction
   | JobListFailAction
