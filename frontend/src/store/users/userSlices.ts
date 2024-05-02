@@ -10,14 +10,17 @@ export const userRegisterSlice = createSlice({
   extraReducers(builder) {
     builder
       .addCase(registerUser.pending, (state) => {
+        // Handle pending action
         state.loading = true
         state.error = null
       })
       .addCase(registerUser.fulfilled, (state, action) => {
+        // Handle fulfilled action
         state.loading = false
         state.user = action.payload
       })
       .addCase(registerUser.rejected, (state, action) => {
+        // Handle rejected action
         state.loading = false
         state.error = action.payload as string
       })
