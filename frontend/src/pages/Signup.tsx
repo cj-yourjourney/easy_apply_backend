@@ -1,7 +1,10 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
-import { User } from '../store/slices/userSlices'
-import { registerUser } from '../store/slices/userSlices'
+import { User } from '../store/users/userTypes';
+import { registerUser } from "../store/users/userThunks";
+
+
+
 function Signup() {
   const dispatch = useAppDispatch()
   const { loading, error } = useAppSelector((state) => state.userRegister)
