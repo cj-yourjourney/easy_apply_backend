@@ -18,6 +18,8 @@ export const userRegisterSlice = createSlice({
         // Handle fulfilled action
         state.loading = false
         state.user = action.payload
+        // Save user info to localStorage
+        localStorage.setItem('userInfo', JSON.stringify(action.payload))
       })
       .addCase(registerUser.rejected, (state, action) => {
         // Handle rejected action
