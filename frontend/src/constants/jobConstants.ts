@@ -1,7 +1,0 @@
-export const JOB_LIST_REQUEST = 'JOB_LIST_REQUEST'
-export const JOB_LIST_SUCCESS = 'JOB_LIST_SUCCESS'
-export const JOB_LIST_FAIL = 'JOB_LIST_FAIL'
-
-export const JOB_ADD_REQUEST = 'JOB_ADD_REQUEST'
-export const JOB_ADD_SUCCESS = 'JOB_ADD_SUCCESS'
-export const JOB_ADD_FAIL = 'JOB_ADD_FAIL'

@@ -1,10 +1,9 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
-import { jobListReducer } from '../reducers/jobReducers'
 import { userRegisterSlice } from './users/userSlices'
 
 
 const reducer = combineReducers({
-  jobList: jobListReducer,
+ 
   userRegister: userRegisterSlice.reducer,
 })
 
