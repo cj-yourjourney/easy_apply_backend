@@ -26,8 +26,8 @@ const Input: React.FC<InputProps> = ({
       <Form.Label>{label}</Form.Label>
       <Form.Control
         type={type}
-        id={id} // Use 'id' as the 'id' attribute for Form.Control
-        name={id} // Use 'id' as the 'name' attribute for Form.Control
+        id={id} 
+        name={id} 
         value={value}
         onChange={onChange}
         placeholder={placeholder}
