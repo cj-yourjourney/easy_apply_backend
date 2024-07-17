@@ -1,9 +1,14 @@
+// src/pages/Signup.tsx
 import React, { useState, ChangeEvent, FormEvent } from 'react'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import { User } from '../store/users/userTypes'
 import { registerUser } from '../store/users/userThunks'
-import { Form, Button, Alert, Spinner } from 'react-bootstrap'
-import FormContainer from '../components/FormContainer' // Import the FormContainer component
+import { Form } from 'react-bootstrap'
+import FormContainer from '../components/Forms/FormContainer'
+import Input from "../components/Forms/Input";
+import Loader from '../components/common/Loader'
+import Message from '../components/common/Message'
+import Button from '../components/Forms/Button'
 
 function Signup() {
   const dispatch = useAppDispatch()
@@ -16,10 +21,10 @@ function Signup() {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setFormData({
-      ...formData,
+    setFormData((prevState) => ({
+      ...prevState,
       [name]: value
-    })
+    }))
   }
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -30,43 +35,33 @@ function Signup() {
   return (
     <FormContainer>
       <h1>Sign Up</h1>
-      {loading && (
-        <Spinner animation="border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </Spinner>
-      )}
-      {error && <Alert variant="danger">Error: {error}</Alert>}
+      {loading && <Loader />}
+      {error && <Message variant="error">Error: {error}</Message>}
       <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="formUsername">
-          <Form.Label>Username</Form.Label>
-          <Form.Control
-            type="text"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-            placeholder="Enter username"
-          />
-        </Form.Group>
-        <Form.Group controlId="formEmail">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Enter email"
-          />
-        </Form.Group>
-        <Form.Group controlId="formPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Password"
-          />
-        </Form.Group>
+        <Input
+          id="username"
+          type="text"
+          label="Username"
+          value={formData.username}
+          onChange={handleChange}
+          placeholder="Enter username"
+        />
+        <Input
+          id="email"
+          type="email"
+          label="Email address"
+          value={formData.email}
+          onChange={handleChange}
+          placeholder="Enter email"
+        />
+        <Input
+          id="password"
+          type="password"
+          label="Password"
+          value={formData.password}
+          onChange={handleChange}
+          placeholder="Password"
+        />
         <Button variant="primary" type="submit">
           Register
         </Button>
