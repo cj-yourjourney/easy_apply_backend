@@ -1,4 +1,3 @@
-// src/components/common/Button.tsx
 import React from 'react'
 import { Button as BootstrapButton } from 'react-bootstrap'
 
@@ -31,6 +30,7 @@ const Button: React.FC<ButtonProps> = ({
       onClick={onClick}
       disabled={disabled}
       type={type}
+      className="mt-4 w-100"
     >
       {children}
     </BootstrapButton>
