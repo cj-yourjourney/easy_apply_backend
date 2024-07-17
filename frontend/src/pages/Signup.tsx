@@ -1,14 +1,14 @@
 // src/pages/Signup.tsx
 import React, { useState, ChangeEvent, FormEvent } from 'react'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
-import { User } from '../store/users/userTypes'
+import { User } from '../types/userTypes'
 import { registerUser } from '../store/users/userThunks'
 import { Form } from 'react-bootstrap'
 import FormContainer from '../components/Forms/FormContainer'
-import Input from "../components/Forms/Input";
+import Input from '../components/Forms/Input'
 import Loader from '../components/common/Loader'
 import Message from '../components/common/Message'
-import Button from '../components/Forms/Button'
+import Button from '../components/common/Button'
 
 function Signup() {
   const dispatch = useAppDispatch()
