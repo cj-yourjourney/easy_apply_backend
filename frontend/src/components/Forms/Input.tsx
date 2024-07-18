@@ -4,6 +4,7 @@ import { Form } from 'react-bootstrap'
 
 interface InputProps {
   id: string
+  name:string
   type: string
   label: string
   value: string
@@ -14,6 +15,7 @@ interface InputProps {
 
 const Input: React.FC<InputProps> = ({
   id,
+  name,
   type,
   label,
   value,
@@ -27,7 +29,7 @@ const Input: React.FC<InputProps> = ({
       <Form.Control
         type={type}
         id={id} 
-        name={id} 
+        name={name} 
         value={value}
         onChange={onChange}
         placeholder={placeholder}

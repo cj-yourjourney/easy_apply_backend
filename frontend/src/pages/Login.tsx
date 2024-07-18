@@ -18,7 +18,6 @@ function Login() {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-
     setFormData((prevState) => ({
       ...prevState,
       [name]: value
@@ -29,7 +28,7 @@ function Login() {
     e.preventDefault()
     dispatch(loginUser(formData))
   }
-
+  
   return (
     <FormContainer>
       <h1>Login</h1>

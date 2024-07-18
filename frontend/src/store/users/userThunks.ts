@@ -39,12 +39,13 @@ export const loginUser = createAsyncThunk(
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError<ErrorResponseData>
+        console.error('API Error:', axiosError.response?.data)
         if (
           axiosError.response &&
           axiosError.response.data &&
           axiosError.response.data.detail
         ) {
-          return rejectWithValue(axiosError.request.data.detail)
+          return rejectWithValue(axiosError.response.data.detail)
         }
       }
       return rejectWithValue(
