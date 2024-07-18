@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios, { AxiosError } from 'axios'
-import { User } from '../../types/userTypes'
+import { LoginUser, User } from '../../types/userTypes'
 
 interface ErrorResponseData {
   detail: string
@@ -23,7 +23,33 @@ export const registerUser = createAsyncThunk(
           return rejectWithValue(axiosError.response.data.detail)
         }
       }
-      return rejectWithValue('An error occurred while processing your request.')
+      return rejectWithValue(
+        'An error occurred while processing your sign up request.'
+      )
+    }
+  }
+)
+
+export const loginUser = createAsyncThunk(
+  'user/login',
+  async (userData: LoginUser, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post('/api/users/login/', userData)
+      return data
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError<ErrorResponseData>
+        if (
+          axiosError.response &&
+          axiosError.response.data &&
+          axiosError.response.data.detail
+        ) {
+          return rejectWithValue(axiosError.request.data.detail)
+        }
+      }
+      return rejectWithValue(
+        'An error occured while processing your login request'
+      )
     }
   }
 )

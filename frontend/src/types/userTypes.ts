@@ -4,8 +4,13 @@ export type User = {
   password: string
 }
 
+export type LoginUser = {
+  username: string
+  password: string
+}
+
 export type UserState = {
-  user: User
+  user: User | null
   loading: boolean
   error: string | null
 }

@@ -1,18 +1,33 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
-import { userRegisterSlice } from './users/userSlices'
+import { userLoginSlice, userRegisterSlice } from './users/userSlices'
 
 
 const reducer = combineReducers({
  
   userRegister: userRegisterSlice.reducer,
+  userLogin: userLoginSlice.reducer,
 })
+
+const getUserFromLocalStorage = () => {
+  const userInfo = localStorage.getItem('userInfo')
+  return userInfo ? JSON.parse(userInfo) : null
+}
+
+
+
+const initialState = {
+  userLogin: {
+    user: getUserFromLocalStorage(),  
+    loading: false,
+    error: null,
+  },
+}
 
 
 export const store = configureStore({
   reducer: reducer,
-
+  preloadedState: initialState, 
 })
-
 
 
 export type RootState = ReturnType<typeof store.getState>
