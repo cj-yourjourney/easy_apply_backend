@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom'
 
 interface NavItemProps {
   to: string
-  children: React.ReactNode
+  children?: React.ReactNode
+  as?: React.ElementType
+  onClick?: () => void
   isActive?: boolean
 }
 

@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react'
+import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import { User } from '../types/userTypes'
 import { registerUser } from '../store/users/userThunks'
@@ -6,10 +6,11 @@ import FormContainer from '../components/Forms/FormContainer'
 import Form from '../components/Forms/Form'
 import Loader from '../components/common/Loader'
 import Message from '../components/common/Message'
+import { saveUserToLocalStorage } from '../utils/localStorageUtils'
 
 function Signup() {
   const dispatch = useAppDispatch()
-  const { loading, error } = useAppSelector((state) => state.userRegister)
+  const { loading, error,user } = useAppSelector((state) => state.userRegister)
   const [formData, setFormData] = useState<User>({
     username: '',
     email: '',
@@ -29,6 +30,7 @@ function Signup() {
     e.preventDefault()
     dispatch(registerUser(formData))
   }
+
 
   return (
     <FormContainer>
