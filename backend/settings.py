@@ -34,20 +34,17 @@ AUTHENTICATION_BACKENDS = ['api.authentication.EmailorUsernameModelBackend']
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-
-    # api app,
-    'api',
-
-    # django rest framework
-    'rest_framework',
-    # simpleJWT for User Auth
-    'rest_framework_simplejwt',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+ 
+    "api",
+    "user_profile",
+    "rest_framework",
+    "rest_framework_simplejwt",
 ]
 
 REST_FRAMEWORK = {
