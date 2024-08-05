@@ -1,11 +1,10 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { userLoginSlice, userRegisterSlice } from './users/userSlices'
-
-
+import profileSlice from './profiles/profileSlices'
 const reducer = combineReducers({
- 
   userRegister: userRegisterSlice.reducer,
   userLogin: userLoginSlice.reducer,
+  profileCreate: profileSlice.reducer
 })
 
 const getUserFromLocalStorage = () => {
@@ -13,23 +12,18 @@ const getUserFromLocalStorage = () => {
   return userInfo ? JSON.parse(userInfo) : null
 }
 
-
-
 const initialState = {
   userLogin: {
-    user: getUserFromLocalStorage(),  
+    user: getUserFromLocalStorage(),
     loading: false,
-    error: null,
-  },
+    error: null
+  }
 }
-
 
 export const store = configureStore({
   reducer: reducer,
-  preloadedState: initialState, 
+  preloadedState: initialState
 })
-
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
-
