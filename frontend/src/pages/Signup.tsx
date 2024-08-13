@@ -34,7 +34,7 @@ function Signup() {
       localStorage.setItem('userInfo', JSON.stringify(resultAction.payload))
     } else {
       // Handle error (if any)
-      console.error(resultAction.payload)
+      console.error('resultAction.payload: ', resultAction.payload)
     }
   }
 

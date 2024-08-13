@@ -13,6 +13,7 @@ const createAsyncThunkWithConfig = <T, ReturnedType>(
     actionName,
     async (payload: T, { rejectWithValue }) => {
       const token = getAuthToken()
+      console.log('token: ', token)
       const config = createConfig(token)
 
       try {
@@ -30,7 +31,7 @@ const getAuthToken = (): string => {
   const userInfo = localStorage.getItem('userInfo')
   if (userInfo) {
     const parsedUserInfo = JSON.parse(userInfo)
-    return parsedUserInfo.access || ''
+    return parsedUserInfo.token || ''
   }
   return ''
 }
@@ -47,21 +48,22 @@ const createConfig = (token: string) => ({
 const handleError = (
   error: unknown,
   actionName: string,
-  rejectWithValue: (value: unknown) => any
+  rejectWithValue: (value: { detail: string }) => any
 ) => {
   if (axios.isAxiosError(error)) {
-    const axiosError = error as AxiosError<ErrorResponseData>
+    const axiosError = error as AxiosError<ErrorResponseData>;
     if (
       axiosError.response &&
       axiosError.response.data &&
       axiosError.response.data.detail
     ) {
-      return rejectWithValue(axiosError.response.data.detail)
+      return rejectWithValue({ detail: axiosError.response.data.detail });
     }
   }
-  return rejectWithValue(
-    `An error occurred while processing your ${actionName} request.`
-  )
-}
+  return rejectWithValue({
+    detail: `An error occurred while processing your ${actionName} request.`
+  });
+};
+
 
 export default createAsyncThunkWithConfig
