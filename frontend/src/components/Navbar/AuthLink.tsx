@@ -1,6 +1,6 @@
 import React from 'react'
 import { useAppSelector, useAppDispatch } from '../../store/hooks'
-import { logout } from '../../store/users/userSlices'
+// import { logout } from '../../store/users/userSlices'
 import NavItem from './NavItem'
 import Button from '../common/Button'
 
@@ -9,7 +9,7 @@ const AuthLink: React.FC = () => {
   const { user } = useAppSelector((state) => state.userLogin)
 
   const handleLogout = () => {
-    dispatch(logout())
+    // dispatch(logout())
   }
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react'
+import React, { useState, ChangeEvent, FormEvent } from 'react'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import { User } from '../types/userTypes'
 import { registerUser } from '../store/users/userThunks'
@@ -7,10 +7,9 @@ import Form from '../components/Forms/Form'
 import Loader from '../components/common/Loader'
 import Message from '../components/common/Message'
 
-
 function Signup() {
   const dispatch = useAppDispatch()
-  const { loading, error,user } = useAppSelector((state) => state.userRegister)
+  const { loading, error, user } = useAppSelector((state) => state.userRegister)
   const [formData, setFormData] = useState<User>({
     username: '',
     email: '',
@@ -26,11 +25,18 @@ function Signup() {
     }))
   }
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    dispatch(registerUser(formData))
-  }
+    const resultAction = await dispatch(registerUser(formData))
 
+    if (registerUser.fulfilled.match(resultAction)) {
+      // Save userInfo to localStorage
+      localStorage.setItem('userInfo', JSON.stringify(resultAction.payload))
+    } else {
+      // Handle error (if any)
+      console.error(resultAction.payload)
+    }
+  }
 
   return (
     <FormContainer>
