@@ -34,15 +34,14 @@ function createGenericSlice<State, Payload, ThunkArg>({
             ;(state as any)[name] = action.payload
           })
           .addCase(thunk.rejected, (state, action) => {
-             
-         ;(state as any).loading = false
+            ;(state as any).loading = false
 
-         // Explicitly type the payload as having a 'detail' property
-         const errorMessage =
-           (action.payload as { detail?: string })?.detail ||
-           action.error.message ||
-           'Something went wrong'
-         ;(state as any).error = errorMessage
+            // Explicitly type the payload as having a 'detail' property
+            const errorMessage =
+              (action.payload as { detail?: string })?.detail || // Simplified error extraction
+              action.error.message ||
+              'Something went wrong'
+            ;(state as any).error = errorMessage
           })
       }
 

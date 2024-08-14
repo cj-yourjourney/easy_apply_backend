@@ -22,6 +22,8 @@ from rest_framework.response import Response
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from api.serializers import UserSerializerWithToken
+from rest_framework.exceptions import ValidationError
+from utils.validation import validate_required_fields, check_existing_object
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -45,35 +47,26 @@ class MyTokenObtainPairView(TokenObtainPairView):
 def register_user(request):
     data = request.data
     try:
-        username = data.get("username")
-        email = data.get("email")
-        password = data.get("password")
-
-        # Check if user enter all requied info
-        if not username or not email or not password:
-            message = {
-                "detail": "Please provide all required fields: username, email, and password"
-            }
-            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+        # Validate that all required fields are provided
+        validate_required_fields(data, ["username", "email", "password"])
 
         # Check if the user with the given email already exists
-        if User.objects.filter(email=email).exists():
-            message = {"detail": "User with this email already exists!!"}
-            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+        check_existing_object(
+            User, {"email": data.get("email")}, "User with this email already exists!!"
+        )
 
-        # create a new User with valid user info
+        # Create a new User with valid user info
         user = User.objects.create(
-            username=username,
-            email=email,
-            password=make_password(password),
+            username=data.get("username"),
+            email=data.get("email"),
+            password=make_password(data.get("password")),
         )
 
         serializer = UserSerializerWithToken(user, many=False)
-        return Response(serializer.data)
-    except IntegrityError as e:
-        # Handle any other integrity error, if needed
-        message = {"detail": "Error creating user"}
-        return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    except Exception as e:
+        return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["GET"])
