@@ -23,7 +23,11 @@ from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from api.serializers import UserSerializerWithToken
 from rest_framework.exceptions import ValidationError
-from utils.validation import validate_required_fields, check_existing_object
+from utils.validation import (
+    validate_required_fields,
+    check_existing_object,
+    CustomValidationError,
+)
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -47,15 +51,11 @@ class MyTokenObtainPairView(TokenObtainPairView):
 def register_user(request):
     data = request.data
     try:
-        # Validate that all required fields are provided
         validate_required_fields(data, ["username", "email", "password"])
-
-        # Check if the user with the given email already exists
         check_existing_object(
             User, {"email": data.get("email")}, "User with this email already exists!!"
         )
 
-        # Create a new User with valid user info
         user = User.objects.create(
             username=data.get("username"),
             email=data.get("email"),
@@ -65,8 +65,13 @@ def register_user(request):
         serializer = UserSerializerWithToken(user, many=False)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    except Exception as e:
+    except CustomValidationError as e:
         return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    except IntegrityError:
+        return Response(
+            {"detail": "Error creating user"},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
 
 
 @api_view(["GET"])
