@@ -5,7 +5,7 @@ import AuthLink from './AuthLink'
 
 const NavLinks: React.FC = () => {
   return (
-    <Nav className="me-auto">
+    <Nav className="me-auto align-items-center">
       <NavItem to="/" isActive>
         Home
       </NavItem>

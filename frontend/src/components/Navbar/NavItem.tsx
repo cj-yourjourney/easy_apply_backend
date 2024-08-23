@@ -12,7 +12,7 @@ interface NavItemProps {
 
 const NavItem: React.FC<NavItemProps> = ({ to, children, isActive }) => {
   return (
-    <Nav.Link as={Link} to={to} className={isActive ? 'active' : ''}>
+    <Nav.Link as={Link} to={to} className={`mx-2 ${isActive ? 'active' : ''}`}>
       {children}
       {isActive && <span className="visually-hidden">(current)</span>}
     </Nav.Link>
