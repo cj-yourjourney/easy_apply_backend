@@ -25,5 +25,6 @@ urlpatterns = [
     path("api/users/", include("api.urls.user_urls")),
     path("api/orders/", include("api.urls.order_urls")),
     path("api/profile/", include("user_profile.urls")),
+    path("api/skills/", include("user_skill.urls")),
     # re_path(r"^.*$", TemplateView.as_view(template_name="index.html")),
 ]

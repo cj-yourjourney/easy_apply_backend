@@ -40,9 +40,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
- 
     "api",
     "user_profile",
+    "user_skill",
     "rest_framework",
     "rest_framework_simplejwt",
 ]
