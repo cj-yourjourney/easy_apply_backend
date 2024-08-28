@@ -1,10 +1,12 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { userLoginSlice, userRegisterSlice } from './users/userSlices'
 import { profileSlice } from './profiles/profileSlices'
+import { skillsSlice } from './skills/skillSlices'
 const reducer = combineReducers({
   userRegister: userRegisterSlice.reducer,
   userLogin: userLoginSlice.reducer,
-  profileCreate: profileSlice.reducer
+  profileCreate: profileSlice.reducer,
+  skillCreate: skillsSlice.reducer
 })
 
 const getUserFromLocalStorage = () => {
