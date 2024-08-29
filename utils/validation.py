@@ -1,3 +1,9 @@
+# utils/validation.py
+from user_profile.models import Profile
+from rest_framework import status
+from rest_framework.response import Response
+
+
 class CustomValidationError(Exception):
     def __init__(self, message):
         self.message = message
@@ -7,12 +13,25 @@ class CustomValidationError(Exception):
 def validate_required_fields(data, required_fields):
     missing_fields = [field for field in required_fields if not data.get(field)]
     if missing_fields:
-        error_message = (
+        raise CustomValidationError(
             f"Please provide all required fields: {', '.join(missing_fields)}"
         )
-        raise CustomValidationError(error_message)
 
 
 def check_existing_object(model, filter_kwargs, error_message):
     if model.objects.filter(**filter_kwargs).exists():
         raise CustomValidationError(error_message)
+
+
+def get_or_create_profile(user):
+    profile, created = Profile.objects.get_or_create(user=user)
+    if created:
+        raise CustomValidationError("Profile does not exist for this user")
+    return profile
+
+
+def create_error_response(error, status_code=status.HTTP_400_BAD_REQUEST):
+    detail = str(error)
+    if isinstance(error, CustomValidationError):
+        detail = error.message
+    return Response({"detail": detail}, status=status_code)
