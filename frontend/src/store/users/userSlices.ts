@@ -6,8 +6,7 @@ import {
 } from '../../types/userTypes'
 
 import { registerUser, loginUser, logoutUser } from './userThunks'
-import createGenericSlice from '../../utils/reduxSliceUtils'
-
+import createGenericSlice from '../../utils/redux/SliceUtils'
 
 export const userRegisterSlice = createGenericSlice<UserState, User, User>({
   name: 'userRegister',
@@ -19,7 +18,7 @@ export const userLoginSlice = createGenericSlice<UserState, User, LoginUser>({
   name: 'userLogin',
   initialState: userInitialState,
   thunk: loginUser,
-  extraReducers:(builder) => {
+  extraReducers: (builder) => {
     builder.addCase(logoutUser.fulfilled, (state: UserState) => {
       state.user = null
       state.loading = false
@@ -27,5 +26,3 @@ export const userLoginSlice = createGenericSlice<UserState, User, LoginUser>({
     })
   }
 })
-
-

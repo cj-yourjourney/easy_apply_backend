@@ -1,5 +1,5 @@
 // src/store/userThunks.ts
-import createGenericAsyncThunk from '../../utils/reduxThunkUtils'
+import createGenericAsyncThunk from '../../utils/redux/ThunkUtils'
 import { LoginUser, User } from '../../types/userTypes'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 

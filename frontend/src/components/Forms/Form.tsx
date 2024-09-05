@@ -2,7 +2,7 @@
 import React from 'react'
 import { Form as BootstrapForm } from 'react-bootstrap'
 import Input from './Input'
-import Button from '../common/Button'
+import CustomButton from '../common/Button'
 
 interface FormProps {
   formType: 'signup' | 'login'
@@ -69,9 +69,9 @@ const Form: React.FC<FormProps> = ({
         placeholder="Password"
         required
       />
-      <Button variant="primary" type="submit">
+      <CustomButton variant="primary" type="submit">
         {formType === 'signup' ? 'Register' : 'Login'}
-      </Button>
+      </CustomButton>
     </BootstrapForm>
   )
 }

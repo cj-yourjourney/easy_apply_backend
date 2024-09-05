@@ -1,4 +1,4 @@
-import createGenericSlice from '../../utils/reduxSliceUtils'
+import createGenericSlice from '../../utils/redux/SliceUtils'
 import { createUserSkills } from './skillThunks'
 import {
   skillInitialState,

@@ -1,5 +1,5 @@
 import { createProfile } from './profileThunks'
-import createGenericSlice from '../../utils/reduxSliceUtils'
+import createGenericSlice from '../../utils/redux/SliceUtils'
 import {
   profileInitialState,
   ProfileState,

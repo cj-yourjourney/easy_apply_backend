@@ -2,7 +2,7 @@
 import React from 'react'
 import { Form as BootstrapForm } from 'react-bootstrap'
 import Input from '../Input'
-import Button from '../../common/Button'
+import CustomButton from '../../common/Button'
 
 interface ProfileInfoFormProps {
   profileData: {
@@ -50,9 +50,9 @@ const ProfileInfoForm: React.FC<ProfileInfoFormProps> = ({
         onChange={onChange}
         placeholder="Enter phone number"
       />
-      <Button variant="primary" type="submit">
+      <CustomButton variant="primary" type="submit">
         Create Profile
-      </Button>
+      </CustomButton>
     </BootstrapForm>
   )
 }

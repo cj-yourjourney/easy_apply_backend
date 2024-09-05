@@ -1,7 +1,7 @@
 import React from 'react'
 import { Form as BootstrapForm } from 'react-bootstrap'
 import Input from '../Input'
-import Button from '../../common/Button'
+import CustomButton from '../../common/Button'
 
 interface UserSkillFormProps {
   skills: string[]
@@ -31,12 +31,12 @@ const UserSkillForm: React.FC<UserSkillFormProps> = ({
           required // Make each input field required
         />
       ))}
-      <Button variant="secondary" onClick={onAddSkill} type="button">
+      <CustomButton variant="secondary" onClick={onAddSkill} type="button">
         Add Another Skill
-      </Button>
-      <Button variant="primary" type="submit">
+      </CustomButton>
+      <CustomButton variant="primary" type="submit">
         Save Skills
-      </Button>
+      </CustomButton>
     </BootstrapForm>
   )
 }

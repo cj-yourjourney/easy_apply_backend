@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button as BootstrapButton } from 'react-bootstrap'
 
-interface ButtonProps {
+interface CustomButtonProps {
   variant?:
     | 'primary'
     | 'secondary'
@@ -17,7 +17,7 @@ interface ButtonProps {
   children: React.ReactNode
 }
 
-const Button: React.FC<ButtonProps> = ({
+const CustomButton: React.FC<CustomButtonProps> = ({
   variant = 'primary',
   onClick,
   disabled,
@@ -37,4 +37,4 @@ const Button: React.FC<ButtonProps> = ({
   )
 }
 
-export default Button
+export default CustomButton

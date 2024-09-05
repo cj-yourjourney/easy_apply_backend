@@ -1,6 +1,5 @@
 import {
   createSlice,
-  createAsyncThunk,
   PayloadAction,
   AsyncThunk
 } from '@reduxjs/toolkit'
