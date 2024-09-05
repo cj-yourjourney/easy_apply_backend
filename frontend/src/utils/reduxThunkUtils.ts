@@ -5,7 +5,7 @@ interface ErrorResponseData {
   detail: string
 }
 
-const createAsyncThunkWithConfig = <T, ReturnedType>(
+const createGenericAsyncThunk = <T, ReturnedType>(
   actionName: string,
   url: string
 ) => {
@@ -66,4 +66,4 @@ const handleError = (
 };
 
 
-export default createAsyncThunkWithConfig
+export default createGenericAsyncThunk

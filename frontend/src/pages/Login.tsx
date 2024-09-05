@@ -6,7 +6,7 @@ import FormContainer from '../components/Forms/FormContainer'
 import Form from '../components/Forms/Form'
 import Loader from '../components/common/Loader'
 import Message from '../components/common/Message'
-import Button from '../components/common/Button'
+
 
 function Login() {
   const dispatch = useAppDispatch()
@@ -29,16 +29,14 @@ function Login() {
     const resultAction = await dispatch(loginUser(formData))
 
     if (loginUser.fulfilled.match(resultAction)) {
-      // Save userInfo to localStorage
+   
       localStorage.setItem('userInfo', JSON.stringify(resultAction.payload))
     } else {
-      // Handle error (if any)
+ 
       console.error(resultAction.payload)
     }
   }
-  const handleLogout = () => {
-    dispatch(logoutUser())
-  }
+
   return (
     <FormContainer>
       <h1>Login</h1>
@@ -51,7 +49,7 @@ function Login() {
         onChange={handleChange}
         onSubmit={handleSubmit}
       />
-      <Button onClick={handleLogout}>Logout</Button>
+   
     </FormContainer>
   )
 }

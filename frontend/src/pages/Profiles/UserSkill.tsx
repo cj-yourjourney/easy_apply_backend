@@ -12,6 +12,9 @@ const UserSkill: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   const skillState = useSelector((state: RootState) => state.skillCreate)
 
+  const {success} = skillState
+
+  console.log('success', success)
   const [skills, setSkills] = useState<string[]>([''])
 
   const handleSkillChange = (

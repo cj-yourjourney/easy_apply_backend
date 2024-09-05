@@ -1,14 +1,14 @@
 // src/store/userThunks.ts
-import createAsyncThunkWithConfig from '../../utils/reduxThunkUtils'
+import createGenericAsyncThunk from '../../utils/reduxThunkUtils'
 import { LoginUser, User } from '../../types/userTypes'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
-export const registerUser = createAsyncThunkWithConfig<User, User>(
+export const registerUser = createGenericAsyncThunk<User, User>(
   'user/register',
   '/api/users/register/'
 )
 
-export const loginUser = createAsyncThunkWithConfig<LoginUser, User>(
+export const loginUser = createGenericAsyncThunk<LoginUser, User>(
   'user/login',
   '/api/users/login/'
 )

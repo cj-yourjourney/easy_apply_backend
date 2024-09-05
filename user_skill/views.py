@@ -33,7 +33,9 @@ def create_user_skills(request):
         profile.save()
 
         serializer = ProfileSerializer(profile)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(
+            {"message": "Skills created successfully"}, status=status.HTTP_201_CREATED
+        )
 
     except Exception as e:
         return create_error_response(e)

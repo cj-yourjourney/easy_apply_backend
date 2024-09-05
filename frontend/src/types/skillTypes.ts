@@ -4,7 +4,7 @@ export interface SkillsPayload {
 }
 
 export interface SkillResponse {
-  skills: string[]
+  message: string
 }
 
 
@@ -12,12 +12,14 @@ export interface SkillsState {
   skills: string[]
   loading: boolean
   error: string | null
+  success: boolean
 }
 
 export const skillInitialState: SkillsState = {
   skills: [],
   loading: false,
-  error: null
+  error: null,
+  success: false 
 }
 
 
