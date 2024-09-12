@@ -1,41 +1,42 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react'
-import { useAppDispatch, useAppSelector } from '../store/hooks'
+// src/pages/Signup.tsx
+import React, { FormEvent } from 'react'
 import { User } from '../types/userTypes'
 import { registerUser } from '../store/users/userThunks'
 import FormContainer from '../components/Forms/FormContainer'
 import Form from '../components/Forms/Form'
 import Loader from '../components/common/Loader'
 import Message from '../components/common/Message'
+import { useNavigate } from 'react-router-dom'
+import { useForm } from '../utils/hooks/useForm'
+import { useAuth } from '../utils/hooks/useAuth'
+import { useAppSelector } from '../store/hooks'
 
-function Signup() {
-  const dispatch = useAppDispatch()
-  const { loading, error, user } = useAppSelector((state) => state.userRegister)
-  const [formData, setFormData] = useState<User>({
+const Signup: React.FC = () => {
+  const { loading, error } = useAppSelector((state) => state.userRegister)
+  const profile = useAppSelector((state) => state.profileCreate.profile)
+  const { formData, handleChange } = useForm<User>({
     username: '',
     email: '',
     password: ''
   })
+  const { handleAuthSubmit } = useAuth()
+  const navigate = useNavigate()
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value
-    }))
-  }
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const resultAction = await dispatch(registerUser(formData))
-
-    if (registerUser.fulfilled.match(resultAction)) {
-      // Save userInfo to localStorage
-      localStorage.setItem('userInfo', JSON.stringify(resultAction.payload))
-    } else {
-      // Handle error (if any)
-      console.error('resultAction.payload: ', resultAction.payload)
-    }
+    handleAuthSubmit(
+      formData,
+      registerUser,
+      (payload) => {
+        localStorage.setItem('userInfo', JSON.stringify(payload))
+        if (!profile) {
+          navigate('/profile-info/')
+        } else {
+          navigate(-1)
+        }
+      },
+      (error) => console.error('Error:', error)
+    )
   }
 
   return (
@@ -43,7 +44,6 @@ function Signup() {
       <h1>Sign Up</h1>
       {loading && <Loader />}
       {error && <Message variant="error">Error: {error}</Message>}
-
       <Form
         formType="signup"
         formData={formData}

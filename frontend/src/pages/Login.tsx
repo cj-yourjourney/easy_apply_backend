@@ -1,40 +1,43 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react'
-import { useAppDispatch, useAppSelector } from '../store/hooks'
+// src/pages/Login.tsx
+import React, { FormEvent } from 'react'
 import { LoginUser } from '../types/userTypes'
-import { loginUser, logoutUser } from '../store/users/userThunks'
+import { loginUser } from '../store/users/userThunks'
 import FormContainer from '../components/Forms/FormContainer'
 import Form from '../components/Forms/Form'
 import Loader from '../components/common/Loader'
 import Message from '../components/common/Message'
+import { useNavigate } from 'react-router-dom'
+import { useForm } from '../utils/hooks/useForm'
+import { useAuth } from '../utils/hooks/useAuth'
+import { useAppSelector } from '../store/hooks'
 
 
-function Login() {
-  const dispatch = useAppDispatch()
-  const { loading, error, user } = useAppSelector((state) => state.userLogin)
-  const [formData, setFormData] = useState<LoginUser>({
+const Login: React.FC = () => {
+  const { loading, error } = useAppSelector((state) => state.userLogin)
+  const profile = useAppSelector((state) => state.profileCreate.profile)
+  const { formData, handleChange } = useForm<LoginUser>({
     username: '',
     password: ''
   })
+  const { handleAuthSubmit } = useAuth()
+  const navigate = useNavigate()
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value
-    }))
-  }
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const resultAction = await dispatch(loginUser(formData))
+    handleAuthSubmit(
+      formData,
+      loginUser,
+      (payload) => {
+        localStorage.setItem('userInfo', JSON.stringify(payload))
 
-    if (loginUser.fulfilled.match(resultAction)) {
-   
-      localStorage.setItem('userInfo', JSON.stringify(resultAction.payload))
-    } else {
- 
-      console.error(resultAction.payload)
-    }
+         if (!profile) {
+           navigate('/profile-info/')
+         } else {
+           navigate(-1) 
+         }
+      },
+      (error) => console.error(error)
+    )
   }
 
   return (
@@ -42,14 +45,12 @@ function Login() {
       <h1>Login</h1>
       {loading && <Loader />}
       {error && <Message variant="error">Error: {error}</Message>}
-
       <Form
         formType="login"
         formData={formData}
         onChange={handleChange}
         onSubmit={handleSubmit}
       />
-   
     </FormContainer>
   )
 }
