@@ -26,12 +26,10 @@ function createGenericSlice<State, Payload, ThunkArg>({
         builder
           .addCase(thunk.pending, (state) => {
             ;(state as any).loading = true
-            ;(state as any).success = false 
             ;(state as any).error = null
           })
           .addCase(thunk.fulfilled, (state, action: PayloadAction<Payload>) => {
             ;(state as any).loading = false
-            ;(state as any).success = true 
             ;(state as any)[name] = action.payload
           })
           .addCase(thunk.rejected, (state, action) => {
