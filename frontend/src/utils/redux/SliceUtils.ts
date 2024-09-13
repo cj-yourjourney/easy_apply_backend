@@ -1,17 +1,22 @@
-import {
-  createSlice,
-  PayloadAction,
-  AsyncThunk
-} from '@reduxjs/toolkit'
+import { createSlice, PayloadAction, AsyncThunk } from '@reduxjs/toolkit'
 
-interface SliceOptions<State, Payload, ThunkArg> {
-  name: string
+// Base state that allows dynamic keys
+interface BaseState {
+  loading: boolean
+  error: string | null
+  [key: string]: any // Allow other dynamic fields
+}
+
+// Options for creating a generic slice
+interface SliceOptions<State extends BaseState, Payload, ThunkArg> {
+  name: string // Allow `name` to be any string
   initialState: State
   thunk?: AsyncThunk<Payload, ThunkArg, {}>
   extraReducers?: (builder: any) => void
 }
 
-function createGenericSlice<State, Payload, ThunkArg>({
+// Generic slice creation function
+function createGenericSlice<State extends BaseState, Payload, ThunkArg>({
   name,
   initialState,
   thunk,
@@ -25,22 +30,21 @@ function createGenericSlice<State, Payload, ThunkArg>({
       if (thunk) {
         builder
           .addCase(thunk.pending, (state) => {
-            ;(state as any).loading = true
-            ;(state as any).error = null
+            state.loading = true
+            state.error = null
           })
           .addCase(thunk.fulfilled, (state, action: PayloadAction<Payload>) => {
-            ;(state as any).loading = false
-            ;(state as any)[name] = action.payload
+            // prettier-ignore
+            state.loading = false;
+            // prettier-ignore
+            (state as any)[name as string] = action.payload
           })
           .addCase(thunk.rejected, (state, action) => {
-            ;(state as any).loading = false
-
-            // Explicitly type the payload as having a 'detail' property
-            const errorMessage =
-              (action.payload as { detail?: string })?.detail || // Simplified error extraction
+            state.loading = false
+            state.error =
+              (action.payload as { detail?: string })?.detail ||
               action.error.message ||
               'Something went wrong'
-            ;(state as any).error = errorMessage
           })
       }
 

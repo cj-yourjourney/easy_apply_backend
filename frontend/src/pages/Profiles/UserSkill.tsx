@@ -10,7 +10,6 @@ const UserSkill: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   const skillState = useSelector((state: RootState) => state.skillCreate)
 
- 
   const [skills, setSkills] = useState<string[]>([''])
 
   const handleSkillChange = (
@@ -18,7 +17,9 @@ const UserSkill: React.FC = () => {
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const newSkills = [...skills]
+
     newSkills[index] = e.target.value
+
     setSkills(newSkills)
   }
 
@@ -26,15 +27,13 @@ const UserSkill: React.FC = () => {
     setSkills([...skills, ''])
   }
 
-const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault()
- 
-  const skillsPayload = { skills }
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
 
-  dispatch(createUserSkills(skillsPayload))
- 
-}
+    const skillsPayload = { skills }
 
+    dispatch(createUserSkills(skillsPayload))
+  }
 
   return (
     <FormContainer>

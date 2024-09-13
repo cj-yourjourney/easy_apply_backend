@@ -16,7 +16,7 @@ export function useAuth() {
     )) as PayloadAction<any>
 
     if (authThunk.fulfilled.match(resultAction)) {
-      onSuccess(resultAction.payload)
+           onSuccess(resultAction.payload) 
     } else {
       onError?.(resultAction.payload)
     }
