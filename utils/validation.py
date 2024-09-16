@@ -23,11 +23,12 @@ def check_existing_object(model, filter_kwargs, error_message):
         raise CustomValidationError(error_message)
 
 
-def get_or_create_profile(user):
-    profile, created = Profile.objects.get_or_create(user=user)
-    if created:
+def get_existing_profile(user):
+    try:
+        profile = Profile.objects.get(user=user)
+        return profile
+    except Profile.DoesNotExist:
         raise CustomValidationError("Profile does not exist for this user")
-    return profile
 
 
 def create_error_response(error, status_code=status.HTTP_400_BAD_REQUEST):

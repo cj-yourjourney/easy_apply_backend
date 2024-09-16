@@ -6,7 +6,7 @@ from .models import Skill
 from .serializers import SkillSerializer
 from utils.validation import (
     validate_required_fields,
-    get_or_create_profile,
+    get_existing_profile,
     create_error_response,
     CustomValidationError,
 )
@@ -18,7 +18,7 @@ def create_user_skills(request):
     data = request.data
 
     try:
-        profile = get_or_create_profile(request.user)
+        profile = get_existing_profile(request.user)
         validate_required_fields(data, ["skills"])
 
         if not isinstance(data["skills"], list):
