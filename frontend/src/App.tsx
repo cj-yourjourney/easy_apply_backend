@@ -7,6 +7,7 @@ import NavBarContainer from './components/Navbar/NavBarContainer';
 import Login from './pages/Login';
 import ProfileInfo from './pages/Profiles/ProfileInfo';
 import UserSkill from './pages/Profiles/UserSkill';
+import WorkExperience from './pages/Profiles/WorkExperience';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/login/" element={<Login />} />
         <Route path="/profile-info/" element={<ProfileInfo />} />
         <Route path="/profile-skills/" element={<UserSkill />} />
+        <Route path="/work-experience/" element={<WorkExperience />} />
       </Routes>
     </Router>
   )

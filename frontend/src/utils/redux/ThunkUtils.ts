@@ -13,7 +13,6 @@ const createGenericAsyncThunk = <T, ReturnedType>(
     actionName,
     async (payload: T, { rejectWithValue }) => {
       const token = getAuthToken()
-      console.log('token: ', token)
       const config = createConfig(token)
 
       try {
