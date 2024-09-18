@@ -5,6 +5,7 @@ import WorkExperienceForm from '../../components/Forms/Profiles/WorkExperienceFo
 import FormContainer from '../../components/Forms/FormContainer'
 import StatusDisplay from '../../components/common/StatusDisplay'
 import { createWorkExperiences } from '../../store/workExperience/workExperienceThunks'
+import CustomButton from '../../components/common/Button' // Import CustomButton
 
 const WorkExperience: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -22,7 +23,6 @@ const WorkExperience: React.FC = () => {
     }
   ])
 
-  // Handle change for individual inputs
   const handleExperienceChange = (
     index: number,
     e: React.ChangeEvent<HTMLInputElement>
@@ -35,7 +35,6 @@ const WorkExperience: React.FC = () => {
     setWorkExperiences(newWorkExperiences)
   }
 
-  // Add a new empty work experience form
   const handleAddExperience = () => {
     setWorkExperiences([
       ...workExperiences,
@@ -49,28 +48,21 @@ const WorkExperience: React.FC = () => {
     ])
   }
 
-  // Remove a work experience form
   const handleRemoveExperience = (index: number) => {
     const newWorkExperiences = [...workExperiences]
     newWorkExperiences.splice(index, 1)
     setWorkExperiences(newWorkExperiences)
   }
 
-  // Handle form submission
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    // Convert string years to numbers
     const formattedExperiences = workExperiences.map((experience) => ({
       ...experience,
       start_year: Number(experience.start_year),
       end_year: Number(experience.end_year)
     }))
 
-    // Log the formatted experiences
-    console.log('Formatted Work Experiences:', formattedExperiences)
-
-    // Dispatch the array of work experiences directly
     dispatch(createWorkExperiences(formattedExperiences))
   }
 
@@ -95,10 +87,13 @@ const WorkExperience: React.FC = () => {
             onRemove={() => handleRemoveExperience(index)}
           />
         ))}
-        <button type="button" onClick={handleAddExperience}>
+
+        {/* Replace button with CustomButton */}
+        <CustomButton type="button" onClick={handleAddExperience}>
           Add Another Experience
-        </button>
-        <button type="submit">Submit Work Experiences</button>
+        </CustomButton>
+
+        <CustomButton type="submit">Submit Work Experiences</CustomButton>
       </form>
     </FormContainer>
   )

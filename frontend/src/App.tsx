@@ -19,7 +19,7 @@ function App() {
         <Route path="/login/" element={<Login />} />
         <Route path="/profile-info/" element={<ProfileInfo />} />
         <Route path="/profile-skills/" element={<UserSkill />} />
-        <Route path="/work-experience/" element={<WorkExperience />} />
+        <Route path="/work-experiences/" element={<WorkExperience />} />
       </Routes>
     </Router>
   )

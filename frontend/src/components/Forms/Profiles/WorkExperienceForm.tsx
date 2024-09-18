@@ -1,5 +1,6 @@
 import React from 'react'
 import Input from '../Input'
+import CustomButton from '../../common/Button' // Import CustomButton
 
 interface WorkExperienceFormProps {
   experience: {
@@ -64,9 +65,11 @@ const WorkExperienceForm: React.FC<WorkExperienceFormProps> = ({
         onChange={onChange}
         required
       />
-      <button type="button" onClick={onRemove}>
+
+      {/* Replace button with CustomButton */}
+      <CustomButton type="button" onClick={onRemove}>
         Remove Experience
-      </button>
+      </CustomButton>
     </div>
   )
 }
