@@ -25,7 +25,7 @@ def create_work_experiences(request):
                 job_title=data["job_title"],
                 company_name=data["company_name"],
                 start_year=data["start_year"],
-                end_year=data.get("end_year"),  # Optional field
+                end_year=data.get("end_year"), 
                 job_description=data["job_description"],
             )
             for data in work_experiences
