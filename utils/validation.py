@@ -1,7 +1,8 @@
-# utils/validation.py
+# backend/utils/validation.py
 from user_profile.models import Profile
 from rest_framework import status
 from rest_framework.response import Response
+from user_skill.models import Skill
 
 
 class CustomValidationError(Exception):
@@ -29,6 +30,38 @@ def get_existing_profile(user):
         return profile
     except Profile.DoesNotExist:
         raise CustomValidationError("Profile does not exist for this user")
+
+
+def validate_and_create_profile(user, data):
+    validate_required_fields(data, ["first_name", "last_name", "phone"])
+    return Profile.objects.create(
+        user=user,
+        first_name=data["first_name"],
+        last_name=data["last_name"],
+        phone=data["phone"],
+    )
+
+
+def validate_work_experience_list(data):
+    if not isinstance(data, list) or not data:
+        raise CustomValidationError("Please provide a list of work experiences.")
+    for work_experience in data:
+        validate_required_fields(
+            work_experience,
+            ["job_title", "company_name", "start_year", "job_description"],
+        )
+    return data
+
+
+def validate_user_skills(data):
+    validate_required_fields(data, ["skills"])
+    if not isinstance(data["skills"], list):
+        raise CustomValidationError("Skills must be a list of strings")
+
+    skills = [
+        Skill.objects.get_or_create(name=skill_name)[0] for skill_name in data["skills"]
+    ]
+    return skills
 
 
 def create_error_response(error, status_code=status.HTTP_400_BAD_REQUEST):

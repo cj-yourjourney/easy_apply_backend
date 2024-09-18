@@ -6,39 +6,32 @@ from rest_framework.response import Response
 from .models import WorkExperience
 from .serializers import WorkExperienceSerializer
 from utils.validation import (
-    validate_required_fields,
+    validate_work_experience_list,
     get_existing_profile,
     create_error_response,
-    CustomValidationError,
 )
 
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
-def create_work_experience(request):
-    data = request.data
-
+def create_work_experiences(request):
     try:
-        # Validate that required fields are present
-        validate_required_fields(
-            data, ["job_title", "company_name", "start_year", "job_description"]
-        )
-
-        # Get or create profile of the user
         profile = get_existing_profile(request.user)
+        work_experiences = validate_work_experience_list(request.data)
 
-        # Create a new work experience object
-        work_experience = WorkExperience.objects.create(
-            profile=profile,
-            job_title=data["job_title"],
-            company_name=data["company_name"],
-            start_year=data["start_year"],
-            end_year=data.get("end_year"),  # Optional field
-            job_description=data["job_description"],
-        )
+        created_work_experiences = [
+            WorkExperience.objects.create(
+                profile=profile,
+                job_title=data["job_title"],
+                company_name=data["company_name"],
+                start_year=data["start_year"],
+                end_year=data.get("end_year"),  # Optional field
+                job_description=data["job_description"],
+            )
+            for data in work_experiences
+        ]
 
-        # Serialize the new work experience
-        serializer = WorkExperienceSerializer(work_experience)
+        serializer = WorkExperienceSerializer(created_work_experiences, many=True)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     except Exception as e:
