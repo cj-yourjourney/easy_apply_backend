@@ -13,7 +13,7 @@ export const workExperienceSlice = createGenericSlice<
   WorkExperienceResponse[], // Response type: Array of work experience response objects
   WorkExperiencePayload[] // Payload type: Array of work experience payload objects
 >({
-  name: 'workExperience',
+  name: 'workExperiences',
   initialState: workExperienceInitialState,
   thunk: createWorkExperiences
 })

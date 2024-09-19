@@ -62,7 +62,7 @@ const WorkExperience: React.FC = () => {
       start_year: Number(experience.start_year),
       end_year: Number(experience.end_year)
     }))
-
+    console.log(formattedExperiences)
     dispatch(createWorkExperiences(formattedExperiences))
   }
 

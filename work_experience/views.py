@@ -1,4 +1,3 @@
-# backend/work_experience/views.py
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -19,18 +18,23 @@ def create_work_experiences(request):
         profile = get_existing_profile(request.user)
         work_experiences = validate_work_experience_list(request.data)
 
-        created_work_experiences = [
-            WorkExperience.objects.create(
-                profile=profile,
-                job_title=data["job_title"],
-                company_name=data["company_name"],
-                start_year=data["start_year"],
-                end_year=data.get("end_year"), 
-                job_description=data["job_description"],
-            )
-            for data in work_experiences
-        ]
+        # Optimized bulk_create to save time and space
+        WorkExperience.objects.bulk_create(
+            [
+                WorkExperience(
+                    profile=profile,
+                    job_title=data["job_title"],
+                    company_name=data["company_name"],
+                    start_year=data["start_year"],
+                    end_year=data.get("end_year"),
+                    job_description=data["job_description"],
+                )
+                for data in work_experiences
+            ]
+        )
 
+        # Query the newly created objects for the response
+        created_work_experiences = WorkExperience.objects.filter(profile=profile)
         serializer = WorkExperienceSerializer(created_work_experiences, many=True)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 

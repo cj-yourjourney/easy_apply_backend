@@ -31,7 +31,7 @@ const UserSkill: React.FC = () => {
     e.preventDefault()
 
     const skillsPayload = { skills }
-
+    console.log(skillsPayload)
     dispatch(createUserSkills(skillsPayload))
   }
 

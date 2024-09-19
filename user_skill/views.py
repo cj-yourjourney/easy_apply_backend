@@ -17,11 +17,10 @@ def create_user_skills(request):
         profile = get_existing_profile(request.user)
         skills = validate_user_skills(request.data)
 
-        profile.skills.set(skills)
-        profile.save()
+        # Optimized using add to avoid clearing existing skills
+        profile.skills.add(*skills)
 
         response_data = {
-            "username": request.user.username,
             "skills": [skill.name for skill in skills],
         }
         return Response(response_data, status=status.HTTP_201_CREATED)
