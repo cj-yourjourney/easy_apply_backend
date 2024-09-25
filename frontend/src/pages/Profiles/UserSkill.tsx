@@ -1,31 +1,18 @@
 // src/components/UserSkill.tsx
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../store/store'
 import UserSkillForm from '../../components/Forms/Profiles/UserSkillForm'
 import FormContainer from '../../components/Forms/FormContainer'
 import StatusDisplay from '../../components/common/StatusDisplay'
 import { createUserSkills } from '../../store/skills/skillThunks'
+import useFormSkills from '../../utils/hooks/useFormSkills'
+
 const UserSkill: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   const skillState = useSelector((state: RootState) => state.skillCreate)
 
-  const [skills, setSkills] = useState<string[]>([''])
-
-  const handleSkillChange = (
-    index: number,
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const newSkills = [...skills]
-
-    newSkills[index] = e.target.value
-
-    setSkills(newSkills)
-  }
-
-  const handleAddSkill = () => {
-    setSkills([...skills, ''])
-  }
+  const { skills, handleSkillChange, handleAddSkill } = useFormSkills()
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()

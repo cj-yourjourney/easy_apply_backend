@@ -1,3 +1,4 @@
+// src/components/Forms/Profiles/UserSkillForm.tsx
 import React from 'react'
 import { Form as BootstrapForm } from 'react-bootstrap'
 import Input from '../Input'
@@ -5,7 +6,7 @@ import CustomButton from '../../common/Button'
 
 interface UserSkillFormProps {
   skills: string[]
-  onChange: (index: number, e: React.ChangeEvent<HTMLInputElement>) => void
+  onChange: (index: number, value: string) => void
   onAddSkill: () => void
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void
 }
@@ -26,9 +27,9 @@ const UserSkillForm: React.FC<UserSkillFormProps> = ({
           type="text"
           label={`Skill ${index + 1}`}
           value={skill}
-          onChange={(e) => onChange(index, e)}
+          onChange={(e) => onChange(index, e.target.value)}
           placeholder="Enter a skill"
-          required // Make each input field required
+          required
         />
       ))}
       <CustomButton variant="secondary" onClick={onAddSkill} type="button">
