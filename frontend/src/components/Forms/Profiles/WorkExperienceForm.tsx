@@ -1,17 +1,19 @@
 import React from 'react'
 import Input from '../Input'
-import CustomButton from '../../common/Button' // Import CustomButton
+import CustomButton from '../../common/Button'
 
 interface WorkExperienceFormProps {
-  experience: {
-    job_title: string
-    company_name: string
-    start_year: string
-    end_year: string
-    job_description: string
-  }
+  experience: WorkExperience
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   onRemove: () => void
+}
+
+export interface WorkExperience {
+  job_title: string
+  company_name: string
+  start_year: string
+  end_year: string
+  job_description: string
 }
 
 const WorkExperienceForm: React.FC<WorkExperienceFormProps> = ({
@@ -21,57 +23,38 @@ const WorkExperienceForm: React.FC<WorkExperienceFormProps> = ({
 }) => {
   return (
     <div>
-      <Input
-        id="job_title"
-        name="job_title"
-        type="text"
-        label="Job Title"
-        value={experience.job_title}
-        onChange={onChange}
-        required
-      />
-      <Input
-        id="company_name"
-        name="company_name"
-        type="text"
-        label="Company Name"
-        value={experience.company_name}
-        onChange={onChange}
-        required
-      />
-      <Input
-        id="start_year"
-        name="start_year"
-        type="text"
-        label="Start Year"
-        value={experience.start_year}
-        onChange={onChange}
-        required
-      />
-      <Input
-        id="end_year"
-        name="end_year"
-        type="text"
-        label="End Year"
-        value={experience.end_year}
-        onChange={onChange}
-      />
-      <Input
-        id="job_description"
-        name="job_description"
-        type="text"
-        label="Job Description"
-        value={experience.job_description}
-        onChange={onChange}
-        required
-      />
+      {[
+        'job_title',
+        'company_name',
+        'start_year',
+        'end_year',
+        'job_description'
+      ].map((field) => (
+        <Input
+          key={field}
+          id={field}
+          name={field}
+          type="text"
+          label={field.replace('_', ' ').toUpperCase()}
+          value={experience[field as keyof WorkExperience]}
+          onChange={onChange}
+          required={field !== 'end_year'} // Optional end year
+        />
+      ))}
 
-      {/* Replace button with CustomButton */}
       <CustomButton type="button" onClick={onRemove}>
         Remove Experience
       </CustomButton>
     </div>
   )
+}
+
+export const initialWorkExperience: WorkExperience = {
+  job_title: '',
+  company_name: '',
+  start_year: '',
+  end_year: '',
+  job_description: ''
 }
 
 export default WorkExperienceForm

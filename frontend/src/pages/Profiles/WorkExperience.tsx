@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../store/store'
 import WorkExperienceForm from '../../components/Forms/Profiles/WorkExperienceForm'
 import FormContainer from '../../components/Forms/FormContainer'
 import StatusDisplay from '../../components/common/StatusDisplay'
+import CustomButton from '../../components/common/Button'
 import { createWorkExperiences } from '../../store/workExperience/workExperienceThunks'
-import CustomButton from '../../components/common/Button' // Import CustomButton
+import useFormArray from '../../utils/hooks/useFormArray'
 
 const WorkExperience: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -13,56 +14,20 @@ const WorkExperience: React.FC = () => {
     (state: RootState) => state.workExperienceCreate
   )
 
-  const [workExperiences, setWorkExperiences] = useState([
-    {
-      job_title: '',
-      company_name: '',
-      start_year: '',
-      end_year: '',
-      job_description: ''
-    }
-  ])
-
-  const handleExperienceChange = (
-    index: number,
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const newWorkExperiences = [...workExperiences]
-    newWorkExperiences[index] = {
-      ...newWorkExperiences[index],
-      [e.target.name]: e.target.value
-    }
-    setWorkExperiences(newWorkExperiences)
-  }
-
-  const handleAddExperience = () => {
-    setWorkExperiences([
-      ...workExperiences,
-      {
-        job_title: '',
-        company_name: '',
-        start_year: '',
-        end_year: '',
-        job_description: ''
-      }
-    ])
-  }
-
-  const handleRemoveExperience = (index: number) => {
-    const newWorkExperiences = [...workExperiences]
-    newWorkExperiences.splice(index, 1)
-    setWorkExperiences(newWorkExperiences)
-  }
+  const {
+    workExperiences,
+    handleExperienceChange,
+    handleAddExperience,
+    handleRemoveExperience
+  } = useFormArray()
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-
     const formattedExperiences = workExperiences.map((experience) => ({
       ...experience,
       start_year: Number(experience.start_year),
       end_year: Number(experience.end_year)
     }))
-    console.log(formattedExperiences)
     dispatch(createWorkExperiences(formattedExperiences))
   }
 
@@ -83,12 +48,13 @@ const WorkExperience: React.FC = () => {
           <WorkExperienceForm
             key={index}
             experience={experience}
-            onChange={(e) => handleExperienceChange(index, e)}
+            onChange={(e) =>
+              handleExperienceChange(index, e.target.name, e.target.value)
+            }
             onRemove={() => handleRemoveExperience(index)}
           />
         ))}
 
-        {/* Replace button with CustomButton */}
         <CustomButton type="button" onClick={handleAddExperience}>
           Add Another Experience
         </CustomButton>
