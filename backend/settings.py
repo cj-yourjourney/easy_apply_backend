@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "api",
     "user_profile",
     "user_skill",
+    "user_education",
     "work_experience",
     "rest_framework",
     "rest_framework_simplejwt",
