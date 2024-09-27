@@ -16,9 +16,10 @@ from utils.validation import (
 def create_work_experiences(request):
     try:
         profile = get_existing_profile(request.user)
-        work_experiences = validate_work_experience_list(request.data)
+        work_experiences = validate_work_experience_list(
+            request.data.get("workExperiences", [])
+        )
 
-        # Optimized bulk_create to save time and space
         WorkExperience.objects.bulk_create(
             [
                 WorkExperience(
