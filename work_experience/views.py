@@ -5,9 +5,11 @@ from rest_framework.response import Response
 from .models import WorkExperience
 from .serializers import WorkExperienceSerializer
 from utils.validation import (
-    validate_work_experience_list,
+    # validate_work_experience_list,
+    validate_payload_list,
     get_existing_profile,
     create_error_response,
+    CustomValidationError
 )
 
 
@@ -16,11 +18,15 @@ from utils.validation import (
 def create_work_experiences(request):
     try:
         profile = get_existing_profile(request.user)
-        work_experiences = validate_work_experience_list(
-            request.data.get("workExperiences", [])
+
+        validated_work_experiences = validate_payload_list(
+            request.data.get("workExperiences", []),
+            ["job_title", "company_name", "start_year", "job_description"],
+            item_name="work experiences",
         )
 
-        WorkExperience.objects.bulk_create(
+        batch_size = 1000  # Adjust based on expected load and AWS RDS capacity
+        created_work_experiences = WorkExperience.objects.bulk_create(
             [
                 WorkExperience(
                     profile=profile,
@@ -30,14 +36,15 @@ def create_work_experiences(request):
                     end_year=data.get("end_year"),
                     job_description=data["job_description"],
                 )
-                for data in work_experiences
-            ]
+                for data in validated_work_experiences
+            ],
+            batch_size=batch_size,
         )
 
-        # Query the newly created objects for the response
-        created_work_experiences = WorkExperience.objects.filter(profile=profile)
         serializer = WorkExperienceSerializer(created_work_experiences, many=True)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-
+    
+    except CustomValidationError as e:  
+        return create_error_response(e)
     except Exception as e:
         return create_error_response(e)

@@ -9,7 +9,9 @@ from utils.validation import (
     get_existing_profile,
     create_error_response,
     CustomValidationError,
+    validate_payload_list,
 )
+
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
@@ -17,39 +19,32 @@ def create_user_educations(request):
     try:
         profile = get_existing_profile(request.user)
 
-        # Extract the education data from the request
-        educations_data = request.data.get("educations", [])
+        validated_educations_data = validate_payload_list(
+            request.data.get("educations", []),
+            ["school_name", "degree", "start_year"],
+            item_name="educations",
+        )
 
-        # Check if the incoming data is a list
-        if not isinstance(educations_data, list) or not educations_data:
-            raise CustomValidationError("Please provide a list of educations.")
+        batch_size = 1000  # Adjust based on expected load and AWS RDS capacity
+        created_educations = Education.objects.bulk_create(
+            [
+                Education(
+                    profile=profile,
+                    school_name=edu["school_name"],
+                    degree=edu["degree"],
+                    start_year=edu["start_year"],
+                    end_year=edu.get("end_year"),  
+                )
+                for edu in validated_educations_data
+            ],
+            batch_size=batch_size, 
+        )
 
-        # Validate each education object in the list
-        required_fields = ["school_name", "degree", "start_year"]
-        for edu in educations_data:
-            validate_required_fields(edu, required_fields)
-
-        # Prepare data for bulk creation
-        education_objects = [
-            Education(
-                profile=profile,
-                school_name=edu["school_name"],
-                degree=edu["degree"],
-                start_year=edu["start_year"],
-                end_year=edu.get("end_year"),  # Optional field
-            )
-            for edu in educations_data
-        ]
-
-        # Use bulk_create for optimized insertion
-        Education.objects.bulk_create(education_objects)
-
-        # Query the newly created objects for the response
-        created_educations = Education.objects.filter(profile=profile)
         serializer = UserEducationSerializer(created_educations, many=True)
 
-        # Wrap the response data in a dictionary
         return Response({"educations": serializer.data}, status=status.HTTP_201_CREATED)
 
+    except CustomValidationError as e:  # Specific validation errors
+        return create_error_response(e)
     except Exception as e:
         return create_error_response(e)

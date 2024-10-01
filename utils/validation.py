@@ -43,13 +43,36 @@ def validate_and_create_profile(user, data):
 
 
 # Optimized work experience validation to batch validate fields
-def validate_work_experience_list(data):
-    if not isinstance(data, list) or not data:
-        raise CustomValidationError("Please provide a list of work experiences.")
+# def validate_work_experience_list(data):
+#     if not isinstance(data, list) or not data:
+#         raise CustomValidationError("Please provide a list of work experiences.")
 
-    required_fields = ["job_title", "company_name", "start_year", "job_description"]
-    for work_experience in data:
-        validate_required_fields(work_experience, required_fields)
+#     required_fields = ["job_title", "company_name", "start_year", "job_description"]
+#     for work_experience in data:
+#         validate_required_fields(work_experience, required_fields)
+
+#     return data
+
+# utils/validation.py
+
+
+def validate_payload_list(data, required_fields, item_name="items"):
+    """
+    Validates that the data is a list and contains required fields for each item.
+
+    Args:
+        data (list): The list of items to validate.
+        required_fields (list): The fields required in each item.
+        item_name (str): The name of the item for error messages.
+
+    Raises:
+        CustomValidationError: If the data is not a list or if required fields are missing.
+    """
+    if not isinstance(data, list) or not data:
+        raise CustomValidationError(f"Please provide a list of {item_name}.")
+
+    for item in data:
+        validate_required_fields(item, required_fields)
 
     return data
 
