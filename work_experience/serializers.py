@@ -6,7 +6,6 @@ class WorkExperienceSerializer(serializers.ModelSerializer):
     class Meta:
         model = WorkExperience
         fields = [
-            "id",
             "job_title",
             "company_name",
             "start_year",

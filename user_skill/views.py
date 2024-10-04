@@ -19,10 +19,8 @@ def create_user_skills(request):
 
         profile.skills.add(*skills)
 
-      
         response_data = [skill.name for skill in skills]
 
-        print(response_data)
         return Response(response_data, status=status.HTTP_201_CREATED)
     except Exception as e:
         return create_error_response(e)
