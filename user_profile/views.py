@@ -12,6 +12,14 @@ from .models import Profile
 @permission_classes([IsAuthenticated])
 def create_user_profile(request):
     try:
+       
+        if Profile.objects.filter(user=request.user).exists():
+            return Response(
+                {"detail": "User already has a profile."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+       
         profile = validate_and_create_profile(request.user, request.data)
         serializer = ProfileSerializer(profile)
 
@@ -32,3 +40,24 @@ def get_user_profile(request):
         return Response(
             {"detail": "Profile not found"}, status=status.HTTP_404_NOT_FOUND
         )
+
+
+@api_view(["PUT", "PATCH"])
+@permission_classes([IsAuthenticated])
+def update_user_profile(request):
+    try:
+        profile = Profile.objects.get(user=request.user)
+        serializer = ProfileSerializer(
+            profile, data=request.data, partial=True
+        )  
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Profile.DoesNotExist:
+        return Response(
+            {"detail": "Profile not found"}, status=status.HTTP_404_NOT_FOUND
+        )
+    except Exception as e:
+        return create_error_response(e)
