@@ -6,7 +6,8 @@ from rest_framework.response import Response
 from .serializers import ProfileSerializer
 from utils.validation import validate_and_create_profile, create_error_response
 from .models import Profile
-
+from utils.profile_utils import update_profile_data
+from utils.validation import get_existing_profile, create_error_response
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
@@ -46,15 +47,8 @@ def get_user_profile(request):
 @permission_classes([IsAuthenticated])
 def update_user_profile(request):
     try:
-        profile = Profile.objects.get(user=request.user)
-        serializer = ProfileSerializer(
-            profile, data=request.data, partial=True
-        )  
-
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        profile = get_existing_profile(request.user)
+        return update_profile_data(profile, request.data, ProfileSerializer)
     except Profile.DoesNotExist:
         return Response(
             {"detail": "Profile not found"}, status=status.HTTP_404_NOT_FOUND
