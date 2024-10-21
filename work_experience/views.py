@@ -43,8 +43,51 @@ def create_work_experiences(request):
 
         serializer = WorkExperienceSerializer(created_work_experiences, many=True)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    
+
     except CustomValidationError as e:  
+        return create_error_response(e)
+    except Exception as e:
+        return create_error_response(e)
+
+
+@api_view(["PUT"])
+@permission_classes([IsAuthenticated])
+def update_work_experiences(request):
+    try:
+        # Step 1: Get the user's profile
+        profile = get_existing_profile(request.user)
+
+        # Step 2: Validate the payload
+        validated_work_experiences = validate_payload_list(
+            request.data.get("workExperiences", []),
+            ["job_title", "company_name", "start_year", "job_description"],
+            item_name="work experiences",
+        )
+
+        # Step 3: Process each work experience (update or create)
+        updated_data = []
+        for data in validated_work_experiences:
+            work_exp, created = WorkExperience.objects.update_or_create(
+                profile=profile,
+                job_title=data[
+                    "job_title"
+                ],  # Assuming job title is a unique identifier
+                defaults={
+                    "company_name": data["company_name"],
+                    "start_year": data["start_year"],
+                    "end_year": data.get("end_year"),
+                    "job_description": data["job_description"],
+                },
+            )
+            updated_data.append(work_exp)
+
+        # Step 4: Serialize the updated data
+        serializer = WorkExperienceSerializer(updated_data, many=True)
+        response_data = {"work_experiences": serializer.data}
+        
+        return Response(response_data, status=status.HTTP_200_OK)
+
+    except CustomValidationError as e:
         return create_error_response(e)
     except Exception as e:
         return create_error_response(e)
