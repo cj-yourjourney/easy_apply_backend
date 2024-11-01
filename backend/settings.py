@@ -21,8 +21,8 @@ env = environ.Env()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Import AWS settings
-from .aws_basic_settings import *
-from .aws_s3_settings import *
+from .aws.basic_settings import *
+from .aws.s3_settings import *
 
 
 # Quick-start development settings - unsuitable for production
@@ -167,10 +167,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-# STATIC_URL = "/static/"
-# STATIC_ROOT = BASE_DIR / "staticfiles"
-
-# STATICFILES_DIRS = [BASE_DIR / "static"]
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
