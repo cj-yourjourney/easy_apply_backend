@@ -23,6 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Import AWS settings
 from .aws.basic_settings import *
 from .aws.s3_settings import *
+from .aws.database_settings import * 
 
 
 # Quick-start development settings - unsuitable for production
@@ -35,6 +36,7 @@ SECRET_KEY = env("DJANGO_EASY_APPLY_SECRET_KEY")
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
 
 AUTHENTICATION_BACKENDS = ["api.authentication.EmailorUsernameModelBackend"]
 
@@ -124,14 +126,6 @@ WSGI_APPLICATION = "backend.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

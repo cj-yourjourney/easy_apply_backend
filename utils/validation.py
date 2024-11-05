@@ -83,3 +83,17 @@ def create_error_response(error, status_code=status.HTTP_400_BAD_REQUEST):
     if isinstance(error, CustomValidationError):
         detail = error.message
     return Response({"detail": detail}, status=status_code)
+
+
+import os
+
+
+def get_env_variable(var_name):
+    """Get an environment variable or raise an error if it's not set."""
+    try:
+        value = os.getenv(var_name)
+        if value is None:
+            raise ValueError(f"Environment variable '{var_name}' is not set.")
+        return value
+    except Exception as e:
+        raise RuntimeError(f"Error accessing environment variable '{var_name}': {e}")
