@@ -7,8 +7,9 @@
 *.class
 __pycache__/
 
-# Ignore SQLite database file
+# Database files
 db.sqlite3
+*.sqlite*
 
 # Ignore log files
 *.log
