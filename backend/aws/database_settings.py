@@ -1,21 +1,17 @@
 # backend/backend/aws/database_settings.py
 
-from django.conf import settings
-from .basic_settings import env
 import os 
-
-# env = environ.Env()
 
 # # AWS Aurora Postgresql Serverless database
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": env(
+        "NAME": os.getenv(
             "EA_DATABASE_NAME"
         ),  # Use the database name you specified or created
-        "USER": env("EA_DATABASE_USER"),  # Master username from RDS setup
-        "PASSWORD": env("EA_DATABASE_PASSWORD"),  # Master password from RDS setup
-        "HOST": env("EA_DATABASE_HOST"),  # Writer Endpoint URL
+        "USER": os.getenv("EA_DATABASE_USER"),  # Master username from RDS setup
+        "PASSWORD": os.getenv("EA_DATABASE_PASSWORD"),  # Master password from RDS setup
+        "HOST": os.getenv("EA_DATABASE_HOST"),  # Writer Endpoint URL
         "PORT": "5432",
     }
 }

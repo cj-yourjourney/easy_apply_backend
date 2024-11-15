@@ -20,8 +20,11 @@ from django.urls import path, include, re_path
 from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
+from django.http import HttpResponse
+from backend.aws.load_balancer import health_check
 
 urlpatterns = [
+    path("api/health/", health_check),
     path("admin/", admin.site.urls),
     path("api/jobs/", include("api.urls.job_urls")),
     path("api/products/", include("api.urls.product_urls")),
@@ -31,6 +34,7 @@ urlpatterns = [
     path("api/skills/", include("user_skill.urls")),
     path("api/educations/", include("user_education.urls")),
     path("api/work-experiences/", include("work_experience.urls")),
+    path("", lambda request: HttpResponse("Welcome to the API root.")),
     # re_path(r"^.*$", TemplateView.as_view(template_name="index.html")),
 ]
 

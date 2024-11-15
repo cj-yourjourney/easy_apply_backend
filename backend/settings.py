@@ -23,19 +23,31 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Import AWS settings
 from .aws.basic_settings import *
 from .aws.s3_settings import *
-from .aws.database_settings import * 
+from .aws.database_settings import *
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env("DJANGO_EASY_APPLY_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "easy-apply-alb-10568729.us-west-1.elb.amazonaws.com",  # AWS Load Balancer URL
+    "127.0.0.1",
+    "localhost",  # Local development (if running locally, like via Docker or local server)
+]
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://easy-apply-react-app.s3-website-us-west-1.amazonaws.com",
+    "http://localhost:3000", # add
+]
+
+
+# CORS_ALLOW_ALL_ORIGINS = True
 
 
 AUTHENTICATION_BACKENDS = ["api.authentication.EmailorUsernameModelBackend"]
@@ -58,6 +70,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     # S3 setup
     "storages",
+    "corsheaders",
 ]
 
 REST_FRAMEWORK = {
@@ -92,6 +105,7 @@ SIMPLE_JWT = {
 
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
