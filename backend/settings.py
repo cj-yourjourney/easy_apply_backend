@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Import AWS settings
 from .aws.basic_settings import *
 from .aws.s3_settings import *
-from .aws.database_settings import *
+# from .aws.database_settings import *
 
 
 # Quick-start development settings - unsuitable for production
@@ -140,6 +140,14 @@ WSGI_APPLICATION = "backend.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR
+        / "db.sqlite3",  # This stores the database file in your project's base directory
+    }
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
