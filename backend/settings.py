@@ -38,6 +38,7 @@ ALLOWED_HOSTS = [
     "easy-apply-alb-10568729.us-west-1.elb.amazonaws.com",  # AWS Load Balancer URL
     "127.0.0.1",
     "localhost",  # Local development (if running locally, like via Docker or local server)
+    "35.167.152.67",
 ]
 
 
